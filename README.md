@@ -17,12 +17,6 @@ Your body works with:
 - And just for aesthetics, prefix hexadecimal 4 chars.  
 (The prefix can be used for filtering).
 
-License
--------
-
-HCrypt is released under the terms of the MIT license. See [COPYING](COPYING) for more
-information or see https://opensource.org/licenses/MIT.
-
 ### Hash Composition
 
 Prefix.Jumps.TrueHash.Salt  
@@ -50,3 +44,9 @@ echo $hako->_crypt();
     // (Just for aesthetics, does not interfere hashing)!
     // *Can be used for filtering; Default: 0x48.
 ```
+
+License
+-------
+
+HCrypt is released under the terms of the MIT license. See [COPYING](COPYING) for more
+information or see https://opensource.org/licenses/MIT.
