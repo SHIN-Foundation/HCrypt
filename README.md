@@ -10,13 +10,12 @@ What is HCrypt?
 
 HCrypt is an experimental cryptography aesthetically based on BCrypt but developed to generate faster hash and lower memory cost.
 
-Your body works with:
-- Safe 176-bit salt randomization;
-- Hash processing based on 288-bit data input size;
-- Jump list in hexadecimal;
-- And just for aesthetics, prefix hexadecimal 4 chars.
-
-* (The prefix can be used for filtering).
+Your body works with:  
+- Safe 176-bit salt randomization;  
+- Hash processing based on 288-bit data input size;  
+- Jump list in hexadecimal;  
+- And just for aesthetics, prefix hexadecimal 4 chars.  
+(The prefix can be used for filtering).
 
 License
 -------
@@ -26,8 +25,8 @@ information or see https://opensource.org/licenses/MIT.
 
 ### Hash Composition
 
-[PREFIX][JUMPS][TRUE HASH][SALT]
-Char: 4.2.36.22
+Prefix.Jumps.TrueHash.Salt  
+Char: 4.2.36.22  
 Total: 64 characters
 
 ### [PHP Example] Syntax Usage
