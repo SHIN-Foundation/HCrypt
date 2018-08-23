@@ -125,7 +125,7 @@
         }
         $pcalc = hexdec ( $wolf[$calc] ) + $r_jump;
         $size_data = strlen ( $_data );
-        for ( $pcr = 0; $pcr < 35; $pcr++ )
+        for ( $pcr = 0; $pcr < 95; $pcr++ )
         {
           if ( $s > 22 ) { $s = 0; }
           if ( $m > $size_data ) { $m = 0; }
@@ -135,7 +135,7 @@
           $s++;
         }
         $aZzn = dechex ( ceil ( $pcalc / 4 ) ) * $qcalc;
-        $aZzn = str_split ( $aZzn, 256 );
+        $aZzn = str_split ( $aZzn, 512 );
         for ( $xaz = 0; $xaz < count ( $aZzn ); $xaz++ )
         {
           $str_aZzn = null;
