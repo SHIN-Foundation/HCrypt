@@ -111,7 +111,6 @@
       }
 
       // Starts to digest
-      $c = 0;         // Count the jump number
       $s = 0;         // Get the salt char
       $m = 0;         // Get the char of input data
       $msg = null;    // Concatenates the digest
@@ -120,48 +119,37 @@
 
       while ( $repeat )
       {
-        if ( $c % $r_jump == 0 )
+        if ( $s > 22 ) { $s = 0; }
+        $calc = ord ( $r_salt[$s] ) * ord ( $_data[$m] );
+        while ( $calc > 42 )
         {
-          if ( $s > 22 ) { $s = 0; }
-          $calc = ord ( $r_salt[$s] ) * ord ( $_data[$m] );
-          while ( $calc > 42 )
+          $calc = floor ( $calc / 3 );
+        }
+        $pcalc = $r_jump * ( hexdec ( $wolf[$calc] ) + ord ( $r_salt[$s] ) );
+        $digest = 1;
+        $size_data = strlen ( $_data );
+        for ( $pcr = 0; $pcr < 35; $pcr++ )
+        {
+          if ( $m > $size_data ) { $m = 0; }
+          $digest = ( ord ( $_data[$m] ) + $digest ) / 16;
+          $qcalc += $digest;
+          $m++;
+        }
+        $s++;
+        $aZzn = dechex ( $pcalc * ceil ( $qcalc ) );
+        $aZzn = str_split ( $aZzn, 4 );
+        for ( $xaz = 0; $xaz < count ( $aZzn ); $xaz++ )
+        {
+          $str_aZzn = null;
+          $conv = $aZzn[$xaz];
+          for ( $i = 0; $i < strlen ( $conv ) - 1; $i += 2 )
           {
-            $calc = floor ( $calc / 3 );
+            $str_aZzn .= chr ( hexdec ( $conv[$i] . $conv[$i + 1] ) );
           }
-          $pcalc = $c + 1 * ( hexdec ( $wolf[$calc] ) + ord ( $r_salt[$s] ) );
-          $digest = 1;
-          $size_data = strlen ( $_data );
-          $pacento = 1;
-          $ipacent = 0;
-          $pcr = true;
-          while ( $pcr )
+          if ( preg_match ( "/^[a-zA-Z0-9]+$/", $str_aZzn ) )
           {
-            if ( ceil ( $pacento ) % 36 != 0 )
-            {
-              if ( $m > $size_data ) { $m = 0; }
-              $digest = ( ord ( $_data[$m] ) * $digest ) / 16;
-              $pacento = $ipacent + $size_data / 36;
-              $qcalc += substr ( $digest, 0, ceil ( $pacento ) );
-              $ipacent = $pacento;
-              $m++;
-            } else { $pcr = false; }
-          }
-          $s++;
-          $aZzn = dechex ( $pcalc * $qcalc );
-          $aZzn = str_split ( $aZzn, 4 );
-          for ( $xaz = 0; $xaz < count ( $aZzn ); $xaz++ )
-          {
-            $str_aZzn = null;
-            $conv = $aZzn[$xaz];
-            for ( $i = 0; $i < strlen ( $conv ) - 1; $i += 2 )
-            {
-              $str_aZzn .= chr ( hexdec ( $conv[$i] . $conv[$i + 1] ) );
-            }
-            if ( preg_match ( "/^[a-zA-Z0-9]+$/", $str_aZzn ) )
-            {
-              $msg .= preg_replace ( '/\s+/', '', $str_aZzn );
-              $xaz = count ( $aZzn );
-            }
+            $msg .= preg_replace ( '/\s+/', '', $str_aZzn );
+            $xaz = count ( $aZzn );
           }
         }
         if ( strlen ( $msg ) == 36 )
@@ -175,7 +163,6 @@
           $subthis = 36 - strlen ( $msg );
           return $r_prefix . $_jump . substr ( $msg, 0, $subthis ) . $r_salt;
         }
-        $c += $r_jump;
       }
     }
   }
