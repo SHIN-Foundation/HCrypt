@@ -114,30 +114,28 @@
       $s = 0;         // Get the salt char
       $m = 0;         // Get the char of input data
       $msg = null;    // Concatenates the digest
-      $qcalc = null;  // Sum the results of equation
       $repeat = true;
 
       while ( $repeat )
       {
-        if ( $s > 22 ) { $s = 0; }
         $calc = ord ( $r_salt[$s] ) * ord ( $_data[$m] );
         while ( $calc > 42 )
         {
           $calc = floor ( $calc / 3 );
         }
-        $pcalc = $r_jump * ( hexdec ( $wolf[$calc] ) + ord ( $r_salt[$s] ) );
-        $digest = 1;
+        $pcalc = hexdec ( $wolf[$calc] ) + $r_jump;
         $size_data = strlen ( $_data );
         for ( $pcr = 0; $pcr < 35; $pcr++ )
         {
+          if ( $s > 22 ) { $s = 0; }
           if ( $m > $size_data ) { $m = 0; }
-          $digest = ( ord ( $_data[$m] ) + $digest ) / 16;
+          $digest = dechex ( ( ord ( $_data[$m] ) + ord ( $r_salt[$s] ) ) * $r_jump );
           $qcalc += $digest;
           $m++;
+          $s++;
         }
-        $s++;
-        $aZzn = dechex ( $pcalc * ceil ( $qcalc ) );
-        $aZzn = str_split ( $aZzn, 4 );
+        $aZzn = dechex ( ceil ( $pcalc / 4 ) ) * $qcalc;
+        $aZzn = str_split ( $aZzn, 256 );
         for ( $xaz = 0; $xaz < count ( $aZzn ); $xaz++ )
         {
           $str_aZzn = null;
